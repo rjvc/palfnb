@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Gestão F&B</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div x-data="app()" class="max-w-6xl mx-auto p-4">
+    <header class="bg-white rounded-xl shadow p-6 mb-6">
+      <div class="flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-800">📊 Dashboard</h1>
+        <span class="text-sm text-gray-400">Hoje · <span x-text="new Date().toLocaleDateString('pt-PT')"></span></span>
+      </div>
+      <div class="grid grid-cols-3 gap-4 mt-4">
+        <div class="text-center">
+          <div class="text-3xl font-bold text-orange-500" x-text="formatMoney(dados.sales?.total_vendas || 0)"></div>
+          <div class="text-sm text-gray-500">Vendas Hoje</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-blue-500" x-text="dados.sales?.total_pedidos || 0"></div>
+          <div class="text-sm text-gray-500">Pedidos Hoje</div>
+        </div>
+        <div class="text-center">
+          <div class="text-3xl font-bold text-green-500" x-text="formatMoney(dados.sales?.ticket_medio || 0)"></div>
+          <div class="text-sm text-gray-500">Ticket Médio</div>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-lg font-bold mb-4">🏆 Top Produtos</h2>
+        <template x-if="(!dados.top_products || dados.top_products.length === 0)">
+          <p class="text-gray-400 text-sm">Sem dados hoje</p>
+        </template>
+        <template x-for="(p, i) in dados.top_products" :key="i">
+          <div class="flex justify-between items-center py-2 border-b last:border-0">
+            <div class="flex items-center gap-2">
+              <span class="text-lg" x-text="'#' + (i+1)"></span>
+              <div>
+                <div class="font-medium" x-text="p.nome"></div>
+                <div class="text-xs text-gray-400" x-text="p.quantidade + ' unidades'"></div>
+              </div>
+            </div>
+            <span class="font-bold text-orange-600" x-text="formatMoney(p.total)"></span>
+          </div>
+        </template>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-lg font-bold mb-4">⚠️ Alertas de Stock</h2>
+        <template x-if="(!dados.stock_alerts || dados.stock_alerts.length === 0)">
+          <p class="text-gray-400 text-sm">Nenhum alerta de stock</p>
+        </template>
+        <template x-for="a in dados.stock_alerts" :key="a.produto_id">
+          <div class="bg-red-50 border border-red-200 rounded-lg p-3 mb-2">
+            <div class="font-medium text-red-700" x-text="a.nome"></div>
+            <div class="text-sm text-red-600" x-text="'Stock: ' + a.stock_atual + ' (mín: ' + a.stock_min + ')'"></div>
+          </div>
+        </template>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-lg font-bold mb-4">📋 Pedidos Pendentes</h2>
+        <div class="text-4xl font-bold text-orange-500" x-text="dados.pedidos_pendentes || 0"></div>
+        <p class="text-sm text-gray-500">pedidos aguardando preparação</p>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="text-lg font-bold mb-4">📲 Logs WhatsApp</h2>
+        <div class="max-h-60 overflow-y-auto">
+          <template x-for="log in whatsappLogs" :key="log.id">
+            <div class="text-sm py-1 border-b last:border-0">
+              <span class="text-gray-400" x-text="new Date(log.criado_em).toLocaleTimeString('pt-PT')"></span>
+              <span class="ml-2" x-text="log.mensagem"></span>
+            </div>
+          </template>
+          <template x-if="whatsappLogs.length === 0">
+            <p class="text-gray-400 text-sm">Sem registos</p>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function app() {
+      return {
+        dados: {},
+        whatsappLogs: [],
+        ws: null,
+        async init() {
+          await this.carregar();
+          this.conectarWS();
+        },
+        async carregar() {
+          const [dashR, wppR] = await Promise.all([
+            fetch('/api/dashboard/today'),
+            fetch('/api/whatsapp/logs')
+          ]);
+          this.dados = await dashR.json();
+          this.whatsappLogs = await wppR.json();
+        },
+        conectarWS() {
+          const proto = location.protocol === 'https:' ? 'wss:' : 'ws:';
+          this.ws = new WebSocket(proto + '//' + location.host + '/ws/dashboard');
+          this.ws.onmessage = (e) => {
+            const msg = JSON.parse(e.data);
+            if (msg.tipo === 'pedido_atualizado') this.carregar();
+          };
+          this.ws.onclose = () => setTimeout(() => this.conectarWS(), 2000);
+        },
+        formatMoney(v) {
+          const n = Number(v);
+          return n.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA', minimumFractionDigits: 0 });
+        }
+      };
+    }
+  </script>
+</body>
+</html>

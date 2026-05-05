@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garçom - Gestão F&B</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body class="bg-gray-100">
+  <div x-data="app()" class="max-w-4xl mx-auto p-4">
+    <header class="bg-white rounded-lg shadow p-4 mb-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-orange-600">🍽️ Garçom</h1>
+      <span class="text-sm text-gray-500" x-text="'Mesa ' + mesa"></span>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="lg:col-span-2">
+        <div class="bg-white rounded-lg shadow p-4 mb-4">
+          <div class="flex gap-2 mb-4 flex-wrap">
+            <template x-for="cat in categorias" :key="cat">
+              <button @click="categoria = cat" class="px-4 py-2 rounded-full text-sm font-medium"
+                :class="categoria === cat ? 'bg-orange-500 text-white' : 'bg-gray-200 text-gray-700'"
+                x-text="cat"></button>
+            </template>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+            <template x-for="p in produtosFiltrados" :key="p.id">
+              <div @click="adicionar(p)" class="bg-gray-50 rounded-lg p-3 cursor-pointer hover:shadow border hover:border-orange-300 transition">
+                <div class="text-lg font-semibold" x-text="p.nome"></div>
+                <div class="text-orange-600 font-bold" x-text="formatMoney(p.preco)"></div>
+                <div class="text-xs text-gray-400" x-text="'stock: ' + p.stock"></div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="bg-white rounded-lg shadow p-4 sticky top-4">
+          <h2 class="text-lg font-bold mb-2">🛒 Pedido</h2>
+          <div class="mb-2">
+            <label class="text-sm text-gray-600">Mesa:</label>
+            <input type="number" x-model="mesa" class="w-full border rounded px-2 py-1" min="1">
+          </div>
+          <div class="mb-2">
+            <label class="text-sm text-gray-600">Cliente:</label>
+            <input type="text" x-model="cliente" class="w-full border rounded px-2 py-1" placeholder="(opcional)">
+          </div>
+          <div class="mb-2">
+            <label class="text-sm text-gray-600">Observações:</label>
+            <textarea x-model="observacoes" class="w-full border rounded px-2 py-1 text-sm" rows="2"></textarea>
+          </div>
+          <template x-if="carrinho.length === 0">
+            <p class="text-gray-400 text-sm py-4 text-center">Carrinho vazio</p>
+          </template>
+          <template x-for="(item, i) in carrinho" :key="i">
+            <div class="flex justify-between items-center py-1 border-b text-sm">
+              <div>
+                <span x-text="item.nome"></span>
+                <span class="text-gray-400" x-text="'x' + item.qtd"></span>
+              </div>
+              <div class="flex items-center gap-1">
+                <span x-text="formatMoney(item.preco * item.qtd)"></span>
+                <button @click="remover(i)" class="text-red-500 text-xs ml-1">✕</button>
+              </div>
+            </div>
+          </template>
+          <div class="flex justify-between font-bold text-lg mt-2">
+            <span>Total</span>
+            <span x-text="formatMoney(total)"></span>
+          </div>
+          <button @click="enviar()" :disabled="carrinho.length === 0"
+            class="w-full mt-3 bg-orange-500 text-white py-2 rounded-lg font-bold disabled:opacity-50"
+            x-text="enviando ? 'Enviando...' : 'Enviar Pedido'"></button>
+          <div x-show="mensagem" x-text="mensagem" class="mt-2 text-sm text-center"
+            :class="mensagem.includes('✓') ? 'text-green-600' : 'text-red-600'"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function app() {
+      return {
+        produtos: [],
+        carrinho: [],
+        mesa: 1,
+        cliente: '',
+        observacoes: '',
+        categoria: 'Todos',
+        enviando: false,
+        mensagem: '',
+        get categorias() {
+          return ['Todos', ...new Set(this.produtos.map(p => p.categoria))];
+        },
+        get produtosFiltrados() {
+          if (this.categoria === 'Todos') return this.produtos;
+          return this.produtos.filter(p => p.categoria === this.categoria);
+        },
+        get total() {
+          return this.carrinho.reduce((s, i) => s + i.preco * i.qtd, 0);
+        },
+        formatMoney(v) { return v.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA', minimumFractionDigits: 0 }); },
+        async init() {
+          const r = await fetch('/api/products');
+          this.produtos = await r.json();
+        },
+        adicionar(p) {
+          const ex = this.carrinho.find(i => i.id === p.id);
+          if (ex) { ex.qtd++; } else { this.carrinho.push({ id: p.id, nome: p.nome, preco: Number(p.preco), qtd: 1 }); }
+        },
+        remover(i) { this.carrinho.splice(i, 1); },
+        async enviar() {
+          if (this.carrinho.length === 0) return;
+          this.enviando = true;
+          this.mensagem = '';
+          try {
+            const r = await fetch('/api/orders', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                mesa: this.mesa,
+                cliente: this.cliente || null,
+                observacoes: this.observacoes || null,
+                items: this.carrinho.map(i => ({ product_id: i.id, quantidade: i.qtd }))
+              })
+            });
+            if (!r.ok) throw new Error('Erro ao enviar');
+            this.mensagem = '✓ Pedido enviado!';
+            this.carrinho = [];
+            this.cliente = '';
+            this.observacoes = '';
+          } catch (e) {
+            this.mensagem = '✗ Erro ao enviar pedido';
+          } finally {
+            this.enviando = false;
+            setTimeout(() => this.mensagem = '', 3000);
+          }
+        }
+      };
+    }
+  </script>
+</body>
+</html>
