@@ -1,4 +1,6 @@
 node_modules/
+test.png
+test4.png
 *.pyc
 __pycache__/
 *.db

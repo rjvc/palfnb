@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 800px;
+    background: #e8e8e8;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Open Sans', sans-serif;
+  }
+  .mockup-box {
+    display: flex; align-items: center; gap: 80px;
+    background: #f5f5f0; padding: 60px 80px; border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+  .pen-area { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+  .pen {
+    position: relative; width: 440px; height: 56px;
+    display: flex; align-items: center;
+    border-radius: 28px;
+    background: linear-gradient(180deg, #1B365D 0%, #0f1f35 100%);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    padding: 0 20px;
+  }
+  .pen::before {
+    content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    width: 16px; height: 24px;
+    background: linear-gradient(180deg, #C8963E 0%, #a77a2e 100%);
+    border-radius: 3px 3px 8px 8px;
+  }
+  .pen::after {
+    content: ''; position: absolute; right: 2px; top: 50%; transform: translateY(-50%);
+    width: 8px; height: 8px;
+    background: #C8963E; border-radius: 50%;
+  }
+  .pen-tip {
+    position: absolute; left: 8px; top: 50%; transform: translateY(-50%);
+    width: 20px; height: 10px;
+    background: linear-gradient(180deg, #C8963E 0%, #8b691f 100%);
+    border-radius: 2px 0 0 2px;
+  }
+  .pen-clip {
+    position: absolute; top: -8px; left: 80px;
+    width: 6px; height: 32px;
+    background: linear-gradient(180deg, #C8963E 0%, #a77a2e 100%);
+    border-radius: 3px 3px 0 0;
+  }
+  .pen-body-text {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+    font-family: 'Montserrat', sans-serif; font-size: 10px;
+    font-weight: 600; color: #C8963E; letter-spacing: 2px;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .pen-label { font-size: 13px; color: #555; font-weight: 600; text-align: center; }
+
+  .info {
+    max-width: 400px;
+  }
+  .info h2 {
+    font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 700;
+    color: #1B365D; margin-bottom: 8px;
+  }
+  .info .sub { font-size: 15px; color: #C8963E; font-weight: 600; margin-bottom: 20px; }
+  .info table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .info td { padding: 8px 12px; border-bottom: 1px solid #ddd; }
+  .info td:first-child { font-weight: 600; color: #555; width: 130px; }
+  .info td:last-child { color: #333; }
+</style>
+</head>
+<body>
+<div class="mockup-box">
+  <div class="pen-area">
+    <div class="pen">
+      <div class="pen-tip"></div>
+      <div class="pen-clip"></div>
+      <div class="pen-body-text">Grupo Castro</div>
+    </div>
+    <div class="pen-label">Caneta esferográfica metálica</div>
+    <div class="pen" style="width: 440px;">
+      <div class="pen-tip"></div>
+      <div class="pen-clip"></div>
+      <div class="pen-body-text">F&B 4.0</div>
+    </div>
+    <div class="pen-label">Caneta esferográfica metálica (design alternativo)</div>
+  </div>
+  <div class="info">
+    <h2>Canetas Personalizadas</h2>
+    <div class="sub">Palestra F&B 4.0 — 10 Set 2026</div>
+    <table>
+      <tr><td>Modelo</td><td>Esferográfica metálica</td></tr>
+      <tr><td>Cor do corpo</td><td>Azul escuro c/ detalhes dourados</td></tr>
+      <tr><td>Tinta</td><td>Azul</td></tr>
+      <tr><td>Mecanismo</td><td>Rotativo (twist)</td></tr>
+      <tr><td>Gravação</td><td>Laser dourado no corpo</td></tr>
+      <tr><td>Quantidade</td><td>100 unidades</td></tr>
+      <tr><td>Fornecedor</td><td>A adjudicar</td></tr>
+    </table>
+  </div>
+</div>
+</body>
+</html>
