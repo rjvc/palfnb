@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px; height: 800px;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #C1663B 0%, #1B365D 100%);
+    color: #FFFFFF;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .top-bar { height: 6px; background: linear-gradient(90deg, #C8963E, #88B7A1, #FFFFFF); }
+  .header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 40px 0 40px;
+  }
+  .logo-text { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.7); letter-spacing: 2px; text-transform: uppercase; }
+  .badge { font-size: 11px; background: #C8963E; color: #FFFFFF; padding: 6px 14px; border-radius: 20px; font-family: 'Montserrat', sans-serif; font-weight: 600; }
+  .main {
+    flex: 1; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px 60px; text-align: center;
+  }
+  .question {
+    font-family: 'Montserrat', sans-serif; font-size: 56px; font-weight: 700;
+    line-height: 1.2; margin-bottom: 16px;
+  }
+  .question .highlight { color: #C8963E; }
+  .subtitle {
+    font-size: 20px; color: rgba(255,255,255,0.8);
+    line-height: 1.5; max-width: 650px; margin-bottom: 36px;
+  }
+  .divider { width: 100px; height: 3px; background: #C8963E; margin: 0 auto 32px; }
+  .event-info {
+    display: flex; gap: 32px; margin-bottom: 36px;
+  }
+  .info-box {
+    background: rgba(255,255,255,0.1);
+    padding: 16px 24px; border-radius: 12px;
+    min-width: 180px; text-align: center;
+  }
+  .info-box .icon { font-size: 24px; margin-bottom: 6px; }
+  .info-box .label { font-size: 12px; color: #88B7A1; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; margin-bottom: 4px; }
+  .info-box .value { font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700; }
+  .cta-button {
+    display: inline-block; background: #C8963E; color: #FFFFFF;
+    font-family: 'Montserrat', sans-serif; font-size: 18px; font-weight: 700;
+    padding: 16px 40px; border-radius: 8px;
+    text-decoration: none; text-transform: uppercase;
+    letter-spacing: 1px; margin-bottom: 12px;
+  }
+  .contact { font-size: 14px; color: rgba(255,255,255,0.6); }
+  .footer {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 40px; border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .footer-info { font-size: 12px; color: rgba(255,255,255,0.5); }
+  .hashtag { font-size: 13px; color: #88B7A1; font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="top-bar"></div>
+<div class="header">
+  <span class="logo-text">Grupo Castro Consultorias</span>
+  <span class="badge">INSCRIÇÃO</span>
+</div>
+<div class="main">
+  <div class="question">Pronto para o <span class="highlight">Futuro</span>?</div>
+  <div class="subtitle">
+    Marque já a sua presença na palestra que vai mudar<br>
+    a forma como gere o seu negócio F&amp;B
+  </div>
+  <div class="divider"></div>
+  <div class="event-info">
+    <div class="info-box">
+      <div class="icon">📅</div>
+      <div class="label">Data</div>
+      <div class="value">10 Setembro</div>
+    </div>
+    <div class="info-box">
+      <div class="icon">📍</div>
+      <div class="label">Local</div>
+      <div class="value">Morro Bento</div>
+    </div>
+    <div class="info-box">
+      <div class="icon">⏰</div>
+      <div class="label">Horário</div>
+      <div class="value">09:00</div>
+    </div>
+  </div>
+  <a class="cta-button" href="https://www.grupocastro.co.ao">Inscreva-se Agora</a>
+  <div class="contact">www.grupocastro.co.ao &bull; Vagas limitadas &bull; Entrada gratuita</div>
+</div>
+<div class="footer">
+  <div class="footer-info">
+    <strong>Grupo Castro Consultorias</strong> &bull; Palestra F&amp;B 4.0
+  </div>
+  <div class="hashtag">#F&B4ponto0</div>
+</div>
+</body>
+</html>
