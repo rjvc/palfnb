@@ -1,0 +1,13 @@
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene01.png'
+duration 5
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene02.png'
+duration 7
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene03.png'
+duration 10
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene04.png'
+duration 10
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene05.png'
+duration 8
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene06.png'
+duration 5
+file '/paperclip/instances/default/projects/7d4eb0da-e9dd-4ebc-b898-f35e8f03a5fa/77d23ed8-d535-46a7-9893-e167aae5f525/palfnb/materiais-fb4/video-teaser/frames-16x9/scene06.png'
